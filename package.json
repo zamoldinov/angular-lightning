@@ -1,5 +1,6 @@
 {
-  "name": "app",
+  "name": "angular-lightning",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "autoprefixer": "^6.1.2",
@@ -31,17 +32,9 @@
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^2.0.0",
     "grunt-zip": "^0.17.1",
-    "jasmine-core": "^2.4.1",
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^1.0.0",
-    "karma": "^0.13.15",
-    "karma-chrome-launcher": "^0.2.0",
-    "karma-coverage": "^0.5.2",
-    "karma-jasmine": "*",
-    "karma-ng-html2js-preprocessor": "^0.2.0",
-    "karma-phantomjs-launcher": "^0.2.1",
     "num2fraction": "^1.2.2",
-    "phantomjs": "^1.9.19",
     "postcss": "^5.0.12",
     "rimraf": "2.2.8",
     "time-grunt": "^1.0.0",
@@ -54,5 +47,16 @@
     "test": "grunt test",
     "postinstall": "bower install",
     "start": "grunt serve"
+  },
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-coverage": "^0.5.2",
+    "karma-jasmine": "*",
+    "karma-ng-html2js-preprocessor": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "jasmine-core": "^2.4.1",
+    "phantomjs": "^1.9.19"
   }
 }
