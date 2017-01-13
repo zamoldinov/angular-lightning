@@ -13,7 +13,7 @@ angular.module('angular-lightning.tabs', [])
 			}
 		});
 		selectedTab.active = true;
-		
+
 		if (!selectedTab.selectCalled) {
 			selectedTab.onSelect();
 			selectedTab.selectCalled = true;
@@ -35,7 +35,7 @@ angular.module('angular-lightning.tabs', [])
 
 	ctrl.removeTab = function removeTab(tab) {
 		var index = tabs.indexOf(tab);
-		
+
 		if (tab.active && tabs.length > 1 && !destroyed) {
 		  var newActiveIndex = index === tabs.length - 1 ? index - 1 : index + 1;
 		  ctrl.select(tabs[newActiveIndex]);
@@ -58,7 +58,7 @@ angular.module('angular-lightning.tabs', [])
 			type: '@'
 		},
 		controller: 'liTabsetController',
-		templateUrl: 'views/util/tabset.html',
+        template: require('../../views/util/tabset.html'),
 		link: function(scope, element, attrs) {
 			scope.vertical = angular.isDefined(attrs.vertical) ? scope.$parent.$eval(attrs.vertical) : false;
 		    scope.justified = angular.isDefined(attrs.justified) ? scope.$parent.$eval(attrs.justified) : false;
@@ -71,7 +71,7 @@ angular.module('angular-lightning.tabs', [])
 	return {
 		require: '^liTabset',
 		replace: true,
-		templateUrl: 'views/util/tab.html',
+        template: require('../../views/util/tab.html'),
 		transclude: true,
 		scope: {
 		  active: '=?',
