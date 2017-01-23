@@ -1,3 +1,6 @@
+var moment = require('../../../node_modules/moment');
+var $ = require('../../../node_modules/jquery');
+
 angular.module('angular-lightning.datepicker', [])
 
 .constant('DateConfig', {
@@ -10,7 +13,7 @@ angular.module('angular-lightning.datepicker', [])
 
 .service('DateService', ['DateConfig', function(DateConfig) {
 	'use strict';
-	
+
 	var Day = function(startMoment, currentMonth) {
 		this.moment = startMoment.clone();
 		this.label = this.moment.format('D');
@@ -22,7 +25,7 @@ angular.module('angular-lightning.datepicker', [])
 		this.days = [];
 		var start = startMoment.clone();
 		var currentMonth = startMoment.month();
-		start = startMoment.startOf('week');		
+		start = startMoment.startOf('week');
 		for(var i=0; i<7; i++) {
 			this.days.push(new Day(start, currentMonth));
 			start = start.add('1', 'days');
@@ -52,12 +55,12 @@ angular.module('angular-lightning.datepicker', [])
 	return {
 		getDate: function(value) {
 			if(value) {
-				return moment(value);	
+				return moment(value);
 			}
 			else {
 				return null;
 			}
-			
+
 		},
 		buildMonth: function(currentDate) {
 			var start = currentDate.clone();
@@ -87,9 +90,9 @@ angular.module('angular-lightning.datepicker', [])
 
 	var _buildCalendar = function() {
 		if(ngModelCtrl.$modelValue) {
-			$scope.month = DateService.buildMonth(moment(ngModelCtrl.$modelValue));
+			$scope.month = DateService.buildMonth(moment(ngModelCtrl.$modelValue, dateModel));
 		}
-		else { 
+		else {
 			$scope.month = DateService.buildMonth(moment());
 		}
 
@@ -98,7 +101,7 @@ angular.module('angular-lightning.datepicker', [])
 			var popupEl = angular.element('<div li-date-dropdown ng-show="isOpen" ng-click="isOpen = true"></div>');
 
 			$popup = $compile(popupEl)($scope);
-			
+
 			$(inputEl).after($popup);
 		}
 
@@ -120,14 +123,14 @@ angular.module('angular-lightning.datepicker', [])
 		ngModelCtrl.$parsers.push(function(value) {
 			if (value) {
 				value = moment(value);
-				
+
 				$scope.hour = value.hour();
 				if (value.format('A') === 'PM') {
 					$scope.hour -= 12;
 				}
 				$scope.minute = value.minute();
 				$scope.ampm = value.format('A');
-			
+
 				return value.format(dateModel);
 			}
 			else {
@@ -151,7 +154,7 @@ angular.module('angular-lightning.datepicker', [])
 
 		var unwatch = $scope.$watch(function() {
 			if (ngModelCtrl.$modelValue) {
-				return moment(ngModelCtrl.$modelValue);
+				return moment(ngModelCtrl.$modelValue, dateModel);
 			}
 		}, function(val) {
 			if (val) {
@@ -160,7 +163,7 @@ angular.module('angular-lightning.datepicker', [])
 				ngModelCtrl.$setViewValue(theDate.format(dateFormat));
 				ngModelCtrl.$render();
 			}
-			
+
 			unwatch();
 			_buildCalendar();
 		});
@@ -180,7 +183,7 @@ angular.module('angular-lightning.datepicker', [])
 	var documentClickBind = function(event) {
 		// check if the click event contains the dropdown or the input itself, if it contains neither, don't set isOpen false, otherwise do.
 		// todo: this requires Jquery - i would love to get rid of this dependency by registering the popup as a dom element in this directive
-		
+
 		//var clickedElementIsInInput = $(self.element)[0].contains(event.target);
 		//var clickedElementIsInPopupElement = $(self.element).parents('.slds-form-element').siblings('.smb-date-dropdown')[0].contains(event.target);
 
@@ -189,7 +192,7 @@ angular.module('angular-lightning.datepicker', [])
 
 		if($scope.isOpen && !(clickedElementIsInInput || clickedElementIsInPopup )) {
 			$scope.isOpen = false;
-			$scope.$apply();					
+			$scope.$apply();
 		}
 	};
 
@@ -204,7 +207,7 @@ angular.module('angular-lightning.datepicker', [])
 
 	//build the calendar around the current date
 	$scope.month = {};
-	
+
 	$scope.$watch('yearPickerOpen', function(val) {
 		if(val) {
 
@@ -216,17 +219,17 @@ angular.module('angular-lightning.datepicker', [])
 			var yearPickerEl = angular.element('<span li-date-year-picker></span>');
 			yearPickerEl.attr({
 				'current-year' : 'getCurrentDate()'
-			});	
+			});
 
 			$yearPicker = $compile(yearPickerEl)($scope);
 			$($popup).find('#year').after($yearPicker);
 		}
-	
+
 	});
 
-	$scope.getCurrentDate = function() { 
+	$scope.getCurrentDate = function() {
 		if(ngModelCtrl.$modelValue) {
-			return moment(ngModelCtrl.$modelValue);	
+			return moment(ngModelCtrl.$modelValue, dateModel);
 		}
 		else {
 			return moment();
@@ -234,7 +237,7 @@ angular.module('angular-lightning.datepicker', [])
 	};
 
 	$scope.getCurrentDateAsMoment = function() {
-		return moment(ngModelCtrl.$modelValue);
+		return moment(ngModelCtrl.$modelValue, dateModel);
 	};
 
 	$scope.nextMonth = function() {
@@ -252,7 +255,7 @@ angular.module('angular-lightning.datepicker', [])
 	$scope.selectYear = function(year) {
 		ngModelCtrl.$setViewValue(year.format(dateFormat));
 		ngModelCtrl.$render();
-		$scope.month = DateService.buildMonth(moment(ngModelCtrl.$modelValue));
+		$scope.month = DateService.buildMonth(moment(ngModelCtrl.$modelValue, dateModel));
 	};
 
 	$scope.changeHour = function(val) {
@@ -277,7 +280,7 @@ angular.module('angular-lightning.datepicker', [])
 	};
 	$scope.changeAMPM = function() {
 		var momentModel = DateService.getDate(ngModelCtrl.$modelValue);
-		
+
 		if (momentModel.format('A') === 'AM') {
 			momentModel.add(12, 'hours');
 		}
@@ -291,7 +294,7 @@ angular.module('angular-lightning.datepicker', [])
 		$scope.ampm = momentModel.format('A');
 	};
 
-	return this;	
+	return this;
 }])
 
 .directive('liDatepicker', ['DateService', function(DateService) {
@@ -310,7 +313,7 @@ angular.module('angular-lightning.datepicker', [])
 .directive('liDateDropdown', [function() {
 	'use strict';
 	return {
-		templateUrl: 'views/fields/date/field-date-dropdown.html',
+		template: require('../../views/fields/date/field-date-dropdown.html'),
 		//require: ['smbFieldDateDropdown', '^smbFieldDate'],
 		//controller: 'DateDropdownController',
 		link: function(scope, element, attrs, controllers) {
@@ -323,7 +326,7 @@ angular.module('angular-lightning.datepicker', [])
 .directive('liDateYearPicker', ['DateService', function(DateService) {
 	'use strict';
 	return {
-		templateUrl: 'views/fields/date/field-date-yearpicker.html',
+		templateU: require('../../views/fields/date/field-date-yearpicker.html'),
 		link: function(scope, element, attrs, controllers) {
 			var currentIndex = 0;
 			var currentYear;
