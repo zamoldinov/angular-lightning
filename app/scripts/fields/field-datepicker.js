@@ -1,5 +1,5 @@
-var moment = require('../../../node_modules/moment');
-var $ = require('../../../node_modules/jquery');
+var moment = require('moment');
+var $ = require('jquery');
 
 angular.module('angular-lightning.datepicker', [])
 

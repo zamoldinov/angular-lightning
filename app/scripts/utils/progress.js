@@ -1,9 +1,11 @@
+var _ = require('underscore');
+
 angular.module('angular-lightning.progress', [])
 
 	.directive('liProgressbar', [function() {
 		'use strict';
 		return {
-			templateUrl: 'views/util/progressbar.html',
+			template: require('../../views/util/progressbar.html'),
 			scope: {
 				value: '=',
 				nobadge: '@'
