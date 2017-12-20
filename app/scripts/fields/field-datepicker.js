@@ -326,7 +326,7 @@ angular.module('angular-lightning.datepicker', [])
 .directive('liDateYearPicker', ['DateService', function(DateService) {
 	'use strict';
 	return {
-		templateU: require('../../views/fields/date/field-date-yearpicker.html'),
+		template: require('../../views/fields/date/field-date-yearpicker.html'),
 		link: function(scope, element, attrs, controllers) {
 			var currentIndex = 0;
 			var currentYear;
