@@ -4,7 +4,7 @@ var $ = require('jquery');
 angular.module('angular-lightning.datepicker', [])
 
 .constant('DateConfig', {
-	numWeeksShown: 5,
+	numWeeksShown: 6,
 	dateFormat: 'MM/DD/YYYY',
 	dateModel: 'YYYY-MM-DD',
 	dateTimeFormat: 'MM/DD/YYYY hh:mm A',
@@ -14,7 +14,7 @@ angular.module('angular-lightning.datepicker', [])
 .value('iconConfig', {
 	iconUrl: '/apexpages/slds/latest/assets/icons/'
 })
-.service('DateService', ['DateConfig', function(DateConfig) {
+.service('DateService', ['DateConfig','$rootScope', function(DateConfig,$rootScope) {
 	'use strict';
 
 	var Day = function(startMoment, currentMonth) {
@@ -30,7 +30,7 @@ angular.module('angular-lightning.datepicker', [])
 		var currentMonth = startMoment.month();
 		start = startMoment.startOf('week');
 		for(var i=0; i<7; i++) {
-			this.days.push(new Day(start, currentMonth));
+			this.days.push(new Day(start, $rootScope.currentMonth));
 			start = start.add('1', 'days');
 		}
 		return this;
@@ -67,6 +67,7 @@ angular.module('angular-lightning.datepicker', [])
 		},
 		buildMonth: function(currentDate) {
 			var start = currentDate.clone();
+			$rootScope.currentMonth=start.month();
 			return new Month(start);
 		},
 		buildYearsAroundCurrent: function(currentYearMoment) {
