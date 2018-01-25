@@ -14,6 +14,21 @@ angular.module('angular-lightning.datepicker', [])
 .value('iconConfig', {
 	iconUrl: '/apexpages/slds/latest/assets/icons/'
 })
+.directive('ngModel', function( $filter ) {
+    return {
+        require: '?ngModel',
+        link: function(scope, elem, attr, ngModel) {
+            if( !ngModel )
+                return;
+            if( attr.type !== 'time' )
+                return;
+                    
+            ngModel.$formatters.unshift(function(value) {
+                return value.replace(/:00\.000$/, '')
+            });
+        }
+    }   
+})   
 .service('DateService', ['DateConfig','$rootScope', function(DateConfig,$rootScope) {
 	'use strict';
 
